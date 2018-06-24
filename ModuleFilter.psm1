@@ -2,18 +2,22 @@
 #Stash the current PSMOdulePath for restoration when user unloads module
 $Script:StashedPSModulePath = $env:PSModulePath
 
+$Script:ConfigPath = $PSScriptRoot
+if (-not (Test-Path $Script:ConfigPath -PathType Container))
+{
+    $null = New-Item $Script:ConfigPath -ItemType Directory -Force
+}
+$Script:ConfigFile = Join-Path $Script:ConfigPath 'ModuleFilter.csv'
+if (-not (Test-Path $Script:ConfigFile -PathType Leaf))
+{
+    $null = New-Item $Script:ConfigFile -ItemType File -Force
+}
 
-#function Select-AutoloadModules
-#$AvailableModules = Get-Module -ListAvailable
 
-#$Selection = $AvailableModules | Out-GridView -Title "Select modules to be available" -OutputMode Multiple
-
-#Code to save selection to local config file
-
-#$env:PSModulePath = ($Selection | select -ExpandProperty ModuleBase) -join [System.IO.Path]::PathSeparator
+Get-ChildItem $PSScriptRoot\Functions | foreach {. $_.FullName}
 
 
-#Unloading the module, or restarting the shell, will remove any filtering.
+#Unloading the module, or restarting the session, will remove any filtering.
 $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
     $env:PSModulePath = $Script:StashedPSModulePath
 }
