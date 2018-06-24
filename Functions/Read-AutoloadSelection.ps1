@@ -7,6 +7,7 @@ function Read-AutoloadSelection
     )
     
     $Config = Import-Csv $Path
+    $Config | foreach {$_.ShouldAutoload = [Convert]::ToBoolean($_.ShouldAutoload)}
     
     Write-Output $Config
 }
