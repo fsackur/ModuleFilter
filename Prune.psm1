@@ -7,7 +7,7 @@ if (-not (Test-Path $Script:ConfigPath -PathType Container))
 {
     $null = New-Item $Script:ConfigPath -ItemType Directory -Force
 }
-$Script:ConfigFile = Join-Path $Script:ConfigPath 'ModuleFilter.csv'
+$Script:ConfigFile = Join-Path $Script:ConfigPath 'PrunedModules.csv'
 if (-not (Test-Path $Script:ConfigFile -PathType Leaf))
 {
     $null = New-Item $Script:ConfigFile -ItemType File -Force
