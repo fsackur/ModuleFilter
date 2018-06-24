@@ -18,7 +18,8 @@ Get-ChildItem $PSScriptRoot\Functions | foreach {. $_.FullName}
 
 
 #On load, apply previous filter
-Select-AutoloadModules (Read-AutoloadSelection)
+$Config = Read-AutoloadSelection
+if ($Config) {Select-AutoloadModules $Config}
 
 
 #Unloading the module, or restarting the session, will remove any filtering.
