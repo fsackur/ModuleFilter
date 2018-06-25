@@ -51,6 +51,8 @@ Remove-Module Prune
 
 When you unload Prune with `Remove-Module`, your previous settings are restored.
 
+If you close and re-open Powershell, your previous settings are restored. Prune does not make permanent changes - but see below for how to add Prune to your profile.
+
 ## To re-apply your previous filter on module autoloading:
 
 ```powershell
@@ -58,6 +60,16 @@ Import-Module Prune
 ```
 
 On loading the module, if you have previously run `Select-AutoloadModules`, your configuration will be re-applied.
+
+## To make Prune permanent:
+
+Prune does not make persistent changes. However, when loaded, it does re-apply your previous settings. Therefore, you can make Prune persist by adding the following line to your Powershell profile:
+
+```powershell
+Import-Module <path to Prune>
+```
+
+This is typically done for both console and ISE profiles, for users of ISE.
 
 # Contributions
 
