@@ -32,3 +32,6 @@ function Get-ScriptDirectory
 [string]$ScriptDirectory = Get-ScriptDirectory
 
 
+#Base directory of the Prune project
+$ModuleBase = Split-Path (Get-ScriptDirectory)
+Import-Module (Join-Path $ModuleBase 'Prune.psd1') -ArgumentList $true	#SkipEnvironmentChange

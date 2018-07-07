@@ -472,7 +472,7 @@ function SearchGrid()
 
 $formMain_Load={
 	#TODO: Initialize Form Controls here
-	
+	& $buttonQuery_Click
 }
 
 $buttonExit_Click={
@@ -493,6 +493,8 @@ $buttonQuery_Click= {
 	# 	$processes = Get-WmiObject Win32_Process -Namespace 'Root\CIMV2'
 	#	$table = ConvertTo-DataTable -InputObject $processes -FilterWMIProperties
 	#	Update-DataGridView -DataGridView $datagridviewResults -Item $table -AutoSizeColumns DisplayedCells
+	$Modules = Get-AutoloadModules
+	Update-DataGridView -DataGridView $datagridviewResults -Item $Modules -AutoSizeColumns DisplayedCells
 }
 
 $buttonSearch_Click={
