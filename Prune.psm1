@@ -1,6 +1,6 @@
 ﻿param
 (
-    [switch]$SkipEnvironmentChange
+    [switch]$SkipEnvironmentChange = $true
 )
 
 

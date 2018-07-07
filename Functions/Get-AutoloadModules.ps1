@@ -8,7 +8,7 @@ function Get-AutoloadModules
     $Properties = (
         @{n='Autoload'; e={$true}},
         'Name',
-        @{n='ModuleBase'; e={$_.ModuleBase -replace '(?<=\\)(\d+\.){0,3}\d+$'}}
+        @{n='Path'; e={$_.ModuleBase -replace '(?<=\\)(\d+\.){0,3}\d+$'}}
     )
-    Get-Module | select $Properties | sort Name, ModuleBase -Unique
+    Get-Module | select $Properties | sort Name, Path -Unique
 }
