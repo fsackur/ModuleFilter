@@ -1,12 +1,11 @@
 function New-Autoload
 {
-    #Roughing out the GUI element
     param
     (
         [Parameter(Mandatory, ValueFromPipeline)]
         [string]$Module
     )
-    
+
     process
     {
         $ModuleInfo = Get-Module $Module -ListAvailable | Sort-Object Version -Descending | Select-Object -First 1
