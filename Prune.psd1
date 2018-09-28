@@ -17,7 +17,7 @@
         'Get-AutoloadModules',
         'Read-AutoloadSelection',
         'Select-AutoloadModules',
-        'Write-AutoloadSelection'
+        'Write-AutoloadSelection', '*'
     )
     CmdletsToExport      = @()
     VariablesToExport    = @()
