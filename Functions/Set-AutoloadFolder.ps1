@@ -16,7 +16,8 @@ function Set-AutoloadFolder
     }
 
     $Script:AutoloadFolder = $AutoloadFolder
-    $Script:AutoloadFolder = [Environment]::SetEnvironmentVariable('PSPruneAutoloadModulePath', $Script:AutoloadFolder, 'User')
+    [Environment]::SetEnvironmentVariable('PSPruneAutoloadModulePath', $Script:AutoloadFolder, 'User')
+    $env:PSModulePath = $AutoloadFolder
 
     if ($Populate)
     {
