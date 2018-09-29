@@ -12,5 +12,10 @@ function Get-JunctionFilePath
         $Script:JunctionFilePath = Join-Path $ResourceFolder 'junction.exe'
     }
 
-    return $Script:JunctionFilePath
+    if (-not (Test-Path $Script:JunctionFilePath -PathType Leaf))
+    {
+        Install-JunctionExe -ErrorAction Stop
+    }
+
+    $Script:JunctionFilePath
 }

@@ -4,5 +4,5 @@ function Install-JunctionExe
     param ()
 
 
-    Invoke-WebRequest https://live.sysinternals.com/junction.exe -OutFile (Get-JunctionFilePath)
+    Invoke-WebRequest https://live.sysinternals.com/junction.exe -OutFile (Get-JunctionFilePath) -Verbose
 }
