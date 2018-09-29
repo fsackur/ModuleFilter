@@ -1,17 +1,26 @@
-function Get-AutoloadFolder
+function Set-AutoloadFolder
 {
     [CmdletBinding()]
-    param ()
+    param
+    (
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [string]$AutoloadFolder,
 
-    if (-not $Script:AutoloadFolder)
+        [Parameter()]
+        [switch]$Populate
+    )
+
+    if (-not (Test-Path $AutoloadFolder -PathType Container))
     {
-        $Script:AutoloadFolder = [Environment]::GetEnvironmentVariable('PSPruneAutoloadModulePath', 'User')
-
-        if (-not $Script:AutoloadFolder)
-        {
-            Write-Error "The autoload folder has not been set. Use 'Set-AutoloadFolder'." -ErrorAction Stop
-        }
+        $null = New-Item $AutoloadFolder -ItemType Directory
     }
 
-    return $Script:AutoloadFolder
+    $Script:AutoloadFolder = $AutoloadFolder
+    $Script:AutoloadFolder = [Environment]::SetEnvironmentVariable('PSPruneAutoloadModulePath', $Script:AutoloadFolder, 'User')
+
+    if ($Populate)
+    {
+        $ModulesToPopulate = Get-AvailableModules -Unique
+        $ModulesToPopulate | New-Autoload
+    }
 }
