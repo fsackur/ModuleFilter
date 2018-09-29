@@ -1,36 +1,44 @@
-﻿param
-(
-    [switch]$SkipEnvironmentChange = $true
-)
+﻿
+# Factory setting: $env:PSModulePath = "$env:USERPROFILE\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules\"
 
 
-Get-ChildItem $PSScriptRoot\Functions | foreach {. $_.FullName}
+$Script:DefaultAutoloadFolder = Join-Path (
+    Join-Path (
+        Join-Path $env:USERPROFILE "Documents") "WindowsPowerShell") "AutoloadModules"
 
 
-if (-not $SkipEnvironmentChange)
+Get-ChildItem $PSScriptRoot\Functions -Filter '*.ps1' | ForEach-Object {. $_.FullName}
+
+$JunctionFilePath = Get-JunctionFilePath
+if (-not (Test-Path $JunctionFilePath))
 {
-    #Stash the current PSModulePath for restoration when user unloads module
-    $Script:StashedPSModulePath = $env:PSModulePath
+    Install-JunctionExe
+}
 
-    $Script:ConfigPath = $PSScriptRoot
-    if (-not (Test-Path $Script:ConfigPath -PathType Container))
+$AutoloadFolder = Get-AutoloadFolder -ErrorAction SilentlyContinue
+if (-not $AutoloadFolder)
+{
+    $AutoloadFolder = $Script:DefaultAutoloadFolder
+
+    if (-not (Test-Path $AutoloadFolder -PathType Container))
     {
-        $null = New-Item $Script:ConfigPath -ItemType Directory -Force
+        $null = New-Item $AutoloadFolder -ItemType Directory
     }
-    $Script:ConfigFile = Join-Path $Script:ConfigPath 'PrunedModules.csv'
-    if (-not (Test-Path $Script:ConfigFile -PathType Leaf))
+
+    if (Get-Autoloads)
     {
-        $null = New-Item $Script:ConfigFile -ItemType File -Force
+        Set-AutoloadFolder $AutoloadFolder
     }
-
-
-    #On load, apply previous filter
-    $Config = Read-AutoloadSelection
-    if ($Config) {Select-AutoloadModules $Config}
-
-
-    #Unloading the module, or restarting the session, will remove any filtering.
-    $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
-        $env:PSModulePath = $Script:StashedPSModulePath
+    else
+    {
+        Set-AutoloadFolder $AutoloadFolder -Populate
     }
+}
+
+
+
+#Unloading the module, or restarting the session, will remove any filtering.
+$Script:StashedPSModulePath = $env:PSModulePath
+$MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
+    $env:PSModulePath = $Script:StashedPSModulePath
 }
