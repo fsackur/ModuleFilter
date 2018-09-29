@@ -32,6 +32,8 @@ if (-not $AutoloadFolder)
     else
     {
         Set-AutoloadFolder $AutoloadFolder -Populate
+        Write-Host "Opening autoload folder; delete modules that you don't want to autoload."
+        Show-AutoloadFolder
     }
 }
 
