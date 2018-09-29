@@ -21,6 +21,6 @@ function New-Autoload
         $AutoloadBase = ($env:PSModulePath -split ';' -match 'Autoload')[0]
         $Junction = Join-Path $AutoloadBase $ModuleName
 
-        & (Join-Path (Join-Path $MyInvocation.MyCommand.Module.ModuleBase 'Resource') 'junction.exe') $Junction $ModuleBase
+        & Invoke-Junction $Junction $ModuleBase
     }
 }
