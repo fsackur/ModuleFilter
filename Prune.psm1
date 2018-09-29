@@ -15,17 +15,20 @@ if (-not (Test-Path $JunctionFilePath))
     Install-JunctionExe
 }
 
-$AutoloadFolder = Get-AutoloadFolder -ErrorAction SilentlyContinue
-if (-not $AutoloadFolder)
+try
+{
+    $AutoloadFolder = Get-AutoloadFolder
+}
+catch [Microsoft.PowerShell.Commands.WriteErrorException]
 {
     $AutoloadFolder = $Script:DefaultAutoloadFolder
 
     if (-not (Test-Path $AutoloadFolder -PathType Container))
     {
-        $null = New-Item $AutoloadFolder -ItemType Directory
+        $null = New-Item $AutoloadFolder -ItemType Directory -ErrorAction Stop
     }
 
-    if (Get-Autoloads)
+    if (Get-ChildItem $AutoloadFolder)
     {
         Set-AutoloadFolder $AutoloadFolder
     }
