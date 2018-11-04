@@ -7,5 +7,5 @@ function Invoke-Junction
         $ModuleBase
     )
 
-    & (Get-JunctionFilePath) $Junction $ModuleBase
+    $Result = & (Get-JunctionFilePath) $Junction $ModuleBase
 }
