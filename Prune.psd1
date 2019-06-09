@@ -15,9 +15,10 @@
 
     FunctionsToExport    = @(
         'Get-AutoloadModules',
+        'New-Autoload',
         'Read-AutoloadSelection',
         'Select-AutoloadModules',
-        'Write-AutoloadSelection', '*'
+        'Write-AutoloadSelection'
     )
     CmdletsToExport      = @()
     VariablesToExport    = @()
